@@ -26,10 +26,18 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: 'user',
-        email: 'user@user.com',
+        name: 'kasir',
+        email: 'kasir@kasir.com',
         password: passwordHash,
-        role: 'user',
+        role: 'kasir',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'manager',
+        email: 'manager@manager.com',
+        password: passwordHash,
+        role: 'manager',
         createdAt: new Date(),
         updatedAt: new Date()
       }

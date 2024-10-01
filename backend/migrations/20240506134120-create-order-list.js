@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      table_id: {
+        type: Sequelize.INTEGER,
+      },
       customer_name: {
         type: Sequelize.STRING
       },
@@ -26,6 +29,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    });
+    await queryInterface.addConstraint('OrderLists', {
+      fields: ['table_id'], // Kolom dalam tabel OrderLists
+      type: 'foreign key',
+      name: 'fk_table_id_table_id', // Nama kunci asing
+      references: {
+        table: 'tables', // Tabel yang diacu
+        field: 'id' // Kolom yang diacu di tabel OrderLists
+      },
+      onDelete: 'CASCADE', // Opsi aksi saat penghapusan
+      onUpdate: 'CASCADE' // Opsi aksi saat pembaruan
     });
   },
   async down(queryInterface, Sequelize) {

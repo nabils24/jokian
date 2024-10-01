@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     order_type: {
       type: DataTypes.ENUM('dine_in', 'take_away')
     },
-    order_date: DataTypes.DATE
+    order_date: DataTypes.DATE,
+    table_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'OrderList',

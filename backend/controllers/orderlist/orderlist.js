@@ -1,18 +1,34 @@
 const  OrderList  = require('../../models/index').OrderList;
+const  Tables  = require('../../models/index').Table;
 const  OrderDetail  = require('../../models/index').OrderDetail;
 
 // Controller untuk membuat order list baru
 async function createOrderList(req, res) {
   try {
-    const { customer_name, order_type, order_date, order_detail } = req.body;
+    const { customer_name, order_type, order_date, order_detail, table_id } = req.body;
 
-    console.log(req.body)
+    console.log(req.body);
+
+    // Cek apakah tabel aktif berdasarkan table_id
+    const table = await Tables.findByPk(table_id);
+    if (!table) {
+      return res.status(404).json({ status: false, message: "Table not found" });
+    }
+
+    // Jika tabel tidak aktif, kembalikan error
+    if (table.status_table === 'inactive') {
+      return res.status(400).json({ status: false, message: "Table is Not Available" });
+    }
+
+    // Jika tabel aktif, ubah status_table menjadi 'inactive'
+    await table.update({ status_table: 'inactive' });
 
     // Buat order list baru
     const newOrderList = await OrderList.create({
       customer_name,
       order_type,
-      order_date
+      order_date,
+      table_id // Tambahkan table_id ke dalam order list
     });
 
     // Buat order detail untuk setiap item dalam order_detail
@@ -29,18 +45,21 @@ async function createOrderList(req, res) {
     }
 
     res.status(200).json({
-      "status" : true,
-      "message" : "Success! Created Product",
-      "data" : {
+      status: true,
+      message: "Success! Created Order List",
+      data: {
         order_list: newOrderList,
-        order_details: orderDetails
+        order_details: orderDetails,
+        updated_table: table // Menyertakan informasi table yang telah di-update
       }
     });
-    
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 }
+
+
 
 // Controller untuk menampilkan semua order list
 async function getOrderLists(req, res) {

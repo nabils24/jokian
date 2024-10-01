@@ -45,7 +45,7 @@ async function loginKasir(req, res) {
     if (userKasir.role == "kasir") {
       // Generate token untuk autentikasi
       const token = jwt.sign(
-        { userId: userKasir.id, role: userKasir.role },
+        { userId: userKasir.id, role: userKasir.role, user:userKasir },
         "rafeyfa",
       ); // Ganti 'rafeyfa' dengan kunci rahasia Anda
 
@@ -84,7 +84,7 @@ async function loginAdmin(req, res) {
     if (userAdmin.role == "admin") {
       // Generate token untuk autentikasi
       const token = jwt.sign(
-        { userId: userAdmin.id, role: userAdmin.role },
+        { userId: userAdmin.id, role: userAdmin.role, user:userAdmin },
         "rafeyfa",
       ); // Ganti 'rafeyfa' dengan kunci rahasia Anda
 
@@ -126,7 +126,7 @@ async function loginManager(req, res) {
     if (userManager.role == "manager") {
       // Generate token untuk autentikasi
       const token = jwt.sign(
-        { userId: userManager.id, role: userManager.role },
+        { userId: userManager.id, role: userManager.role, user:userManager },
         "rafeyfa",
       ); // Ganti 'rafeyfa' dengan kunci rahasia Anda
 
@@ -232,6 +232,74 @@ function verifyTokenKasir(req, res, next) {
 
   // Jika role sesuai, lanjutkan
   req.userId = decoded.userId;
+  req.userKasir = decoded.user;
+  req.role = userRole;
+  next();
+  });
+}
+function verifyTokenManager(req, res, next) {
+  const authorizationHeader = req.headers["authorization"];
+  if (!authorizationHeader) {
+    return res.status(401).json({ error: "Authorization header is missing" });
+  }
+
+  // Periksa apakah token berada dalam format yang benar (Bearer {token})
+  const [scheme, token] = authorizationHeader.split(" ");
+  if (!scheme || !token || scheme.toLowerCase() !== "bearer") {
+    return res
+      .status(401)
+      .json({ error: "Invalid authorization header format" });
+  }
+
+  // Verifikasi token JWT
+  jwt.verify(token, "rafeyfa", (error, decoded) => {
+    if (error) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    // Cek role dari payload
+  const userRole = decoded.role;
+
+  if (userRole !== 'manager') {
+    return res.status(403).json({ error: "Access denied: Manager only" });
+  }
+
+  // Jika role sesuai, lanjutkan
+  req.userId = decoded.userId;
+  req.userManager = decoded.user;
+  req.role = userRole;
+  next();
+  });
+}
+
+function verifyTokenAdmin(req, res, next) {
+  const authorizationHeader = req.headers["authorization"];
+  if (!authorizationHeader) {
+    return res.status(401).json({ error: "Authorization header is missing" });
+  }
+
+  // Periksa apakah token berada dalam format yang benar (Bearer {token})
+  const [scheme, token] = authorizationHeader.split(" ");
+  if (!scheme || !token || scheme.toLowerCase() !== "bearer") {
+    return res
+      .status(401)
+      .json({ error: "Invalid authorization header format" });
+  }
+
+  // Verifikasi token JWT
+  jwt.verify(token, "rafeyfa", (error, decoded) => {
+    if (error) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    // Cek role dari payload
+  const userRole = decoded.role;
+
+  if (userRole !== 'admin') {
+    return res.status(403).json({ error: "Access denied: Admin only" });
+  }
+
+  // Jika role sesuai, lanjutkan
+  req.userId = decoded.userId;
+  req.userAdmin = decoded.user;
   req.role = userRole;
   next();
   });
@@ -329,6 +397,8 @@ module.exports = {
   loginManager,
   verifyToken,
   verifyTokenKasir,
+  verifyTokenManager,
+  verifyTokenAdmin,
   getUserById,
   updateUser,
   deleteUser,

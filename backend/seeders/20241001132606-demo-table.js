@@ -12,20 +12,20 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('Products', [
+    await queryInterface.bulkInsert('Tables', [
       {
-        name: 'EsTeh',
-        size: 'Large',
-        price: 8.00,
-        image: 'Esteh.jpg',
+        tables_name: 'Meja_1',
+        status_table: 'active',
         createdAt: new Date(),
         updatedAt: new Date()
-      },
-      {
-        name: 'Gado-Gado',
-        size: 'Large',
-        price: 15,
-        image: 'gado2.jpg',
+      },{
+        tables_name: 'Meja_2',
+        status_table: 'active',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        tables_name: 'Meja_3',
+        status_table: 'active',
         createdAt: new Date(),
         updatedAt: new Date()
       }

@@ -32,7 +32,7 @@ selanjutnya lakukan import database
 !Note jangan lupa menambahkan database diphpmyadmin!
 
 untuk setting nama databasenya bisa klik 
-[di sini](jokian/backend/config/config.json)
+[di sini](/backend/config/config.json)
 
 lalu jalankan ini
 

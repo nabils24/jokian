@@ -144,7 +144,7 @@ const Pesanan = () => {
                                             <td className="px-6 py-4 border-b">
                                                 <button
                                                     onClick={() => handleDownloadReceipt(order.id)}
-                                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                                    className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded"
                                                 >
                                                     Download Receipt
                                                 </button>

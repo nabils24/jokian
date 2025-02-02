@@ -90,7 +90,7 @@ const CardGrid = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-white">
+        <div className="flex justify-center items-center min-h-screen bg-pink-200">
             <div className="container mx-auto py-10">
                 <h2 className="text-3xl font-bold text-center mb-6">🍧Ice Cream Kami🍧</h2>
 

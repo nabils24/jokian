@@ -221,13 +221,13 @@ export default function MenuPage() {
     // Render component
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-4">Selamat Datang di Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-4">Selamat Datang di Menu</h1>
             
             {/* Add Menu Button */}
             <div className="flex justify-end mb-6">
                 <button 
                     onClick={openAddModal}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
+                    className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded transition-colors"
                 >
                     Tambah Menu
                 </button>
@@ -252,7 +252,7 @@ export default function MenuPage() {
                                 <td className="border px-4 py-2">{item.price}</td>
                                 <td className="border px-4 py-2 space-x-2">
                                     <button 
-                                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                                        className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded"
                                         onClick={() => openEditModal(item)}
                                     >
                                         Edit
@@ -285,7 +285,7 @@ export default function MenuPage() {
                                         required
                                         value={newItem.name}
                                         onChange={handleAddChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                 </div>
                                 <div>
@@ -295,7 +295,7 @@ export default function MenuPage() {
                                         name="type"
                                         value={newItem.type}
                                         onChange={handleAddChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                 </div>
                                 <div>
@@ -305,7 +305,7 @@ export default function MenuPage() {
                                         name="size"
                                         value={newItem.size}
                                         onChange={handleAddChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                 </div>
                                 <div>
@@ -316,7 +316,7 @@ export default function MenuPage() {
                                         required
                                         value={newItem.price}
                                         onChange={handleAddChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                 </div>
                                 <div>
@@ -328,7 +328,7 @@ export default function MenuPage() {
                                         required
                                         accept="image/png, image/jpeg"
                                         onChange={handleAddChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                     {imagePreview && (
                                         <div className="mt-2">
@@ -351,7 +351,7 @@ export default function MenuPage() {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
                                 >
                                     Save
                                 </button>
@@ -376,7 +376,7 @@ export default function MenuPage() {
                                         name="name"
                                         value={currentItem.name}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                 </div>
                                 <div>
@@ -386,7 +386,7 @@ export default function MenuPage() {
                                         name="price"
                                         value={currentItem.price}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     />
                                 </div>
                             </div>
@@ -400,7 +400,7 @@ export default function MenuPage() {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className="px-4 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
                                 >
                                     Save
                                 </button>

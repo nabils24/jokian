@@ -49,7 +49,7 @@ export default function Daftar() {
     return (
         <main>
             <Navbar />
-            <div className="flex justify-center items-center h-screen bg-gray-100">
+            <div className="flex justify-center items-center h-screen bg-pink-200">
                 <div className="max-w-md w-full p-6 bg-white shadow-lg rounded-lg">
                     <h2 className="text-2xl font-bold text-center mb-4">Daftar Akun</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">

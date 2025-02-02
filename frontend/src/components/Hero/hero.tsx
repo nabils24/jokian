@@ -3,7 +3,7 @@ import React from 'react';
 
 const Hero = () => {
     return (
-        <div className="hero bg-white min-h-screen">
+        <div className="hero bg-pink-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <img
                     src="/hero.png"

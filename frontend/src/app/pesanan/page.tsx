@@ -112,18 +112,19 @@ const Pesanan = () => {
     return (
         <main>
             <Navbar />
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-6">Halaman Pesanan</h1>
-
+            <div className="pt-24 px-18 px-4 py-8 bg-center bg-no-repeat bg-cover min-h-screen w-screen overflow-y-auto" style={{
+                backgroundImage: `url('https://wallpapers.com/images/hd/pink-pastel-background-1280-x-800-fubdyima1gpioo62.jpg')`
+            }}>
+                <h1 className="text-3xl font-bold mb-6">Pesanan Saya🍨</h1>
                 {loading ? (
                     <p className="text-center">Loading...</p>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-300">
+                        <table className="w-full bg-pink-300 border border-gray-300">
                             <thead>
-                                <tr className="bg-gray-100">
+                                <tr className="bg-pink-100">
                                     <th className="px-6 py-3 border-b text-left">Order ID</th>
-                                    <th className="px-6 py-3 border-b text-left">Customer Name</th>
+                                    {/* <th className="px-6 py-3 border-b text-left">Customer Name</th> */}
                                     <th className="px-6 py-3 border-b text-left">Product</th>
                                     <th className="px-6 py-3 border-b text-left">Quantity</th>
                                     <th className="px-6 py-3 border-b text-left">Total Price</th>
@@ -133,9 +134,9 @@ const Pesanan = () => {
                             <tbody>
                                 {orders.map((order) => (
                                     order.OrderDetails.map((detail, index) => (
-                                        <tr key={`${order.id}-${index}`} className="hover:bg-gray-50">
+                                        <tr key={`${order.id}-${index}`} className="hover:bg-pink-50">
                                             <td className="px-6 py-4 border-b">{order.id}</td>
-                                            <td className="px-6 py-4 border-b">{order.customer_name}</td>
+                                            {/* <td className="px-6 py-4 border-b">{order.customer_name}</td> */}
                                             <td className="px-6 py-4 border-b">
                                                 {products[detail.product_id]?.name || 'Loading...'}
                                             </td>
@@ -146,7 +147,7 @@ const Pesanan = () => {
                                             <td className="px-6 py-4 border-b">
                                                 <button
                                                     onClick={() => handleDownloadReceipt(order.id)}
-                                                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                                                    className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded"
                                                 >
                                                     Download Receipt
                                                 </button>

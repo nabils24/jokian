@@ -46,12 +46,12 @@ const Liked = () => {
     }, []);
 
     return (
-        <div className="bg-white pb-8">
+        <div className="bg-pink-200 pb-8">
             <h2 className="text-4xl font-bold text-center mb-8 text-black animate-bounce">
                 🍦 Es Krim Yang Bikin Kamu Meleleh! 🍦
             </h2>
             <div className="flex w-full flex-col justify-center gap-4 lg:flex-row">
-                <div className="card bg-pink-200 w-96 shadow-xl hover:scale-105 transition-transform">
+                <div className="card bg-pink-300 w-96 shadow-xl hover:scale-105 transition-transform">
                     <div className="card-body">
                         {product1 ? (
                             <>
@@ -75,7 +75,7 @@ const Liked = () => {
                     )}
                 </div>
                 <div className="divider lg:divider-horizontal">Atau</div>
-                <div className="card bg-pink-200 w-96 shadow-xl hover:scale-105 transition-transform">
+                <div className="card bg-pink-300 w-96 shadow-xl hover:scale-105 transition-transform">
                     <div className="card-body">
                         {product2 ? (
                             <>

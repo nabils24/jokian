@@ -46,7 +46,7 @@ const Liked = () => {
     }, []);
 
     return (
-        <div className="bg-base-200 pb-8">
+        <div className="bg-white pb-8">
             <h2 className="text-4xl font-bold text-center mb-8 text-black animate-bounce">
                 🍦 Es Krim Yang Bikin Kamu Meleleh! 🍦
             </h2>

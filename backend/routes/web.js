@@ -113,4 +113,11 @@ router.put("/admin/tables/change/:id", TableController.updateTableStatus);
 router.put("/admin/tables/:id", TableController.updateTable);
 router.delete("/admin/tables/:id", TableController.deleteTable);
 
+//Order
+router.get("/admin/order", OrderController.getOrderLists);
+router.get("/admin/order/:id", OrderController.getOrderListById);
+router.post("/admin/order", OrderController.createOrderList);
+router.get("/admin/order/print/:id", OrderController.printReceiptPDF);
+router.delete("/admin/order/:id", OrderController.deleteOrderList);
+
 module.exports = router;

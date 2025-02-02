@@ -44,13 +44,13 @@ const Navbar = () => {
                         <li><a>Kontak Kami</a></li>
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Naffie's Restaurant</a>
+                <a href='/' className="btn btn-ghost text-xl">Naffie's Restaurant</a>
             </div>
             {/* Mode Website */}
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    <li><a>Home</a></li>
-                    <li><a>Kontak Kami</a></li>
+                    <li><a href='/'>Home</a></li>
+                    <li><a href='/pesanan'>Pesanan saya</a></li>
                 </ul>
             </div>
             <div className="gap-2 navbar-end hidden lg:flex">

@@ -12,35 +12,35 @@ const path = require("path");
 // Controller untuk membuat order list baru
 async function createOrderList(req, res) {
   try {
-    const { customer_name, order_type, order_date, order_detail, table_id } =
+    const { customer_name, order_type, order_date, order_detail } =
       req.body;
 
     console.log(req.body);
 
     // Cek apakah tabel aktif berdasarkan table_id
-    const table = await Tables.findByPk(table_id);
-    if (!table) {
-      return res
-        .status(404)
-        .json({ status: false, message: "Table not found" });
-    }
+    // const table = await Tables.findByPk(table_id);
+    // if (!table) {
+    //   return res
+    //     .status(404)
+    //     .json({ status: false, message: "Table not found" });
+    // }
 
-    // Jika tabel tidak aktif, kembalikan error
-    if (table.status_table === "inactive") {
-      return res
-        .status(400)
-        .json({ status: false, message: "Table is Not Available" });
-    }
+    // // Jika tabel tidak aktif, kembalikan error
+    // if (table.status_table === "inactive") {
+    //   return res
+    //     .status(400)
+    //     .json({ status: false, message: "Table is Not Available" });
+    // }
 
-    // Jika tabel aktif, ubah status_table menjadi 'inactive'
-    await table.update({ status_table: "inactive" });
+    // // Jika tabel aktif, ubah status_table menjadi 'inactive'
+    // await table.update({ status_table: "inactive" });
 
     // Buat order list baru
     const newOrderList = await OrderList.create({
       customer_name,
       order_type,
       order_date,
-      table_id, // Tambahkan table_id ke dalam order list
+      // table_id, // Tambahkan table_id ke dalam order list
     });
 
     // Buat order detail untuk setiap item dalam order_detail
@@ -62,7 +62,7 @@ async function createOrderList(req, res) {
       data: {
         order_list: newOrderList,
         order_details: orderDetails,
-        updated_table: table, // Menyertakan informasi table yang telah di-update
+        // updated_table: table, // Menyertakan informasi table yang telah di-update
       },
     });
   } catch (error) {
@@ -218,7 +218,7 @@ async function printReceiptPDF(req, res) {
     // Ambil nama kasir dari req.user (misalnya jika menggunakan sistem otentikasi)
     const cashierName = req.userKasir ? req.userKasir.email : "Unknown Cashier"; // Sesuaikan dengan sistem autentikasi yang kamu gunakan
     // Nama kafe (dapat disesuaikan atau diambil dari pengaturan sistem)
-    const cafeName = "Rafeyfa Cafe";
+    const cafeName = "Naffie's Restaurant";
 
     // Format data pemesanan
     const orderItems = orderList.OrderDetails.map(item => ({

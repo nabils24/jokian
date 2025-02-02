@@ -7,6 +7,7 @@ const CardGrid = () => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
+    const [orderLoading, setOrderLoading] = useState(false);
 
     // Ambil data user dari sessionStorage saat komponen pertama kali dimuat
     useEffect(() => {
@@ -41,10 +42,55 @@ const CardGrid = () => {
         };
 
         fetchProducts();
-    }, [token]); // Hanya jalankan fetch jika token sudah ada
+    }, [token]);
+
+    // Fungsi untuk menangani pemesanan
+    const handleOrder = async (product) => {
+        if (!user || !token) {
+            alert("Silakan login terlebih dahulu");
+            return;
+        }
+
+        setOrderLoading(true);
+        
+        const orderData = {
+            customer_name: user.name,
+            order_type: "Delivery",
+            order_date: new Date().toISOString().split('T')[0], // Format: YYYY-MM-DD
+            order_detail: [{
+                product_id: product.id,
+                price: product.price,
+                quantity: 1
+            }]
+        };
+
+        try {
+            const response = await fetch("http://localhost:3001/admin/order", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+            
+            if (result.status) {
+                alert("Pesanan berhasil dibuat!");
+            } else {
+                alert("Gagal membuat pesanan");
+            }
+        } catch (error) {
+            console.error("Error saat membuat pesanan:", error);
+            alert("Terjadi kesalahan saat membuat pesanan");
+        } finally {
+            setOrderLoading(false);
+        }
+    };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-base-200">
+        <div className="flex justify-center items-center min-h-screen bg-white">
             <div className="container mx-auto py-10">
                 <h2 className="text-3xl font-bold text-center mb-6">🍧Ice Cream Kami🍧</h2>
 
@@ -62,7 +108,13 @@ const CardGrid = () => {
                                     <p className="text-gray-600">Size: {product.size}</p>
                                     <p className="font-semibold text-lg">Rp {product.price.toLocaleString()}</p>
                                     <div className="card-actions justify-end">
-                                        <button className="btn bg-pink-300">Beli Sekarang</button>
+                                        <button 
+                                            className="btn bg-pink-300"
+                                            onClick={() => handleOrder(product)}
+                                            disabled={orderLoading}
+                                        >
+                                            {orderLoading ? "Memproses..." : "Beli Sekarang"}
+                                        </button>
                                     </div>
                                 </div>
                             </div>

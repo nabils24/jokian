@@ -31,9 +31,15 @@ export default function Login() {
             if (response.ok) {
                 sessionStorage.setItem("user", JSON.stringify(data));
                 setMessage("Login berhasil!");
-                setTimeout(() => {
-                    router.push("http://localhost:3000");
-                }, 2000);
+                if (data.data.userAdmin.email == 'admin@admin.com') {
+                    setTimeout(() => {
+                        router.push("http://localhost:3000/admin");
+                    }, 2000);
+                } else{
+                    setTimeout(() => {
+                        router.push("http://localhost:3000");
+                    }, 2000);
+                }
             } else {
                 setMessage(data.message || "Email atau password salah");
             }
@@ -53,30 +59,30 @@ export default function Login() {
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <label className="block">
                             <span className="text-gray-700">Email</span>
-                            <input 
-                                type="email" 
-                                name="email" 
-                                value={formData.email} 
-                                onChange={handleChange} 
-                                className="input input-bordered w-full" 
-                                placeholder="Email Kamu" 
-                                required 
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="input input-bordered w-full"
+                                placeholder="Email Kamu"
+                                required
                             />
                         </label>
                         <label className="block">
                             <span className="text-gray-700">Password</span>
-                            <input 
-                                type="password" 
-                                name="password" 
-                                value={formData.password} 
-                                onChange={handleChange} 
-                                className="input input-bordered w-full" 
-                                placeholder="Password" 
-                                required 
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="input input-bordered w-full"
+                                placeholder="Password"
+                                required
                             />
                         </label>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className="btn bg-pink-300 hover:bg-pink-600 w-full"
                             disabled={loading}
                         >

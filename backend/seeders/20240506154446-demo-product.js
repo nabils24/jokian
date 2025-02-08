@@ -16,7 +16,7 @@ module.exports = {
       {
         name: 'Ice Cream Vanilla',
         size: 'medium',
-        price: 8.00,
+        price: 8000,
         type: 'desert',
         image: 'http://localhost:3001/products/uploads/1738158416244.jpg',
         createdAt: new Date(),
@@ -25,7 +25,7 @@ module.exports = {
       {
         name: 'Ice Cream Vanilla Chocomalt',
         size: 'medium',
-        price: 15,
+        price: 15000,
         type: 'desert',
         image: 'http://localhost:3001/products/uploads/1738158369867.png',
         createdAt: new Date(),

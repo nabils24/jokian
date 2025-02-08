@@ -21,7 +21,7 @@ const CardGrid = () => {
 
     // Ambil produk dari API jika token sudah tersedia
     useEffect(() => {
-        if (!token) return; // Jangan fetch sebelum token ada
+        if (!token) return;
 
         const fetchProducts = async () => {
             try {
@@ -44,7 +44,44 @@ const CardGrid = () => {
         fetchProducts();
     }, [token]);
 
-    // Fungsi untuk menangani pemesanan
+    // Fungsi untuk menambah item ke keranjang
+    const addToCart = (product) => {
+        if (!user || !token) {
+            alert("Silakan login terlebih dahulu");
+            return;
+        }
+
+        // Ambil keranjang yang ada dari sessionStorage
+        const existingCart = JSON.parse(sessionStorage.getItem("cart") || "[]");
+        
+        // Cek apakah produk sudah ada di keranjang
+        const existingItemIndex = existingCart.findIndex(item => item.product_id === product.id);
+        
+        let updatedCart;
+        if (existingItemIndex !== -1) {
+            // Jika produk sudah ada, tambah quantity
+            updatedCart = existingCart.map((item, index) => 
+                index === existingItemIndex
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item
+            );
+        } else {
+            // Jika produk belum ada, tambah item baru
+            updatedCart = [...existingCart, {
+                product_id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: product.image
+            }];
+        }
+
+        // Simpan keranjang yang sudah diupdate ke sessionStorage
+        sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+        alert("Produk berhasil ditambahkan ke keranjang");
+    };
+
+    // Fungsi untuk handle order
     const handleOrder = async (product) => {
         if (!user || !token) {
             alert("Silakan login terlebih dahulu");
@@ -53,40 +90,23 @@ const CardGrid = () => {
 
         setOrderLoading(true);
         
+        // Ambil keranjang dari sessionStorage
+        const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
+        
         const orderData = {
             customer_name: user.name,
             order_type: "Delivery",
-            order_date: new Date().toISOString().split('T')[0], // Format: YYYY-MM-DD
-            order_detail: [{
-                product_id: product.id,
-                price: product.price,
-                quantity: 1
-            }]
+            order_date: new Date().toISOString().split('T')[0],
+            order_detail: cart.map(item => ({
+                product_id: item.product_id,
+                price: item.price,
+                quantity: item.quantity
+            }))
         };
 
-        try {
-            const response = await fetch("http://localhost:3001/admin/order", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(orderData)
-            });
-
-            const result = await response.json();
-            
-            if (result.status) {
-                alert("Pesanan berhasil dibuat!");
-            } else {
-                alert("Gagal membuat pesanan");
-            }
-        } catch (error) {
-            console.error("Error saat membuat pesanan:", error);
-            alert("Terjadi kesalahan saat membuat pesanan");
-        } finally {
-            setOrderLoading(false);
-        }
+        // Setelah order berhasil, kosongkan keranjang
+        sessionStorage.removeItem("cart");
+        setOrderLoading(false);
     };
 
     return (
@@ -110,10 +130,10 @@ const CardGrid = () => {
                                     <div className="card-actions justify-end">
                                         <button 
                                             className="btn bg-pink-300"
-                                            onClick={() => handleOrder(product)}
+                                            onClick={() => addToCart(product)}
                                             disabled={orderLoading}
                                         >
-                                            {orderLoading ? "Memproses..." : "Beli Sekarang"}
+                                            Tambah ke Keranjang
                                         </button>
                                     </div>
                                 </div>

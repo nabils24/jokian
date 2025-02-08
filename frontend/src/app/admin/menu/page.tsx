@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import { useEffect, useState, useRef } from "react";
+import axios from "axios";
 
 export default function MenuPage() {
     // State declarations
@@ -22,13 +22,11 @@ export default function MenuPage() {
         image: null,
     });
 
-    // Add preview state for image
+    // Preview untuk gambar
     const [imagePreview, setImagePreview] = useState(null);
-    
-    // Add reference for file input
     const fileInputRef = useRef(null);
 
-    // User authentication effect
+    // Ambil data user dari sessionStorage
     useEffect(() => {
         const storedUser = sessionStorage.getItem("user");
         if (storedUser) {
@@ -38,7 +36,7 @@ export default function MenuPage() {
         }
     }, []);
 
-    // Fetch products effect
+    // Fetch data menu
     useEffect(() => {
         if (!token) return;
 
@@ -80,7 +78,7 @@ export default function MenuPage() {
         setImagePreview(null);
         setIsAddModalOpen(false);
         if (fileInputRef.current) {
-            fileInputRef.current.value = '';
+            fileInputRef.current.value = "";
         }
     };
 
@@ -109,7 +107,6 @@ export default function MenuPage() {
         const { name, value, files } = event.target;
         if (name === "image") {
             if (files && files[0]) {
-                // Create preview URL for image
                 const previewUrl = URL.createObjectURL(files[0]);
                 setImagePreview(previewUrl);
                 setNewItem({ ...newItem, image: files[0] });
@@ -127,10 +124,9 @@ export default function MenuPage() {
     // API handlers
     const handleAddSubmit = async (event) => {
         event.preventDefault();
-        
-        // Validate required fields
+
         if (!newItem.name || !newItem.price || !newItem.image) {
-            alert('Mohon lengkapi semua field yang diperlukan');
+            alert("Mohon lengkapi semua field yang diperlukan");
             return;
         }
 
@@ -148,7 +144,7 @@ export default function MenuPage() {
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
+                        "Content-Type": "multipart/form-data",
                     },
                 }
             );
@@ -156,14 +152,13 @@ export default function MenuPage() {
             if (response.data.status) {
                 setMenuItems([...menuItems, response.data.data.product]);
                 closeAddModal();
-                // Cleanup preview URL
                 if (imagePreview) {
                     URL.revokeObjectURL(imagePreview);
                 }
             }
         } catch (error) {
             console.error("Gagal menambah data produk:", error);
-            alert('Gagal menambah produk. Silakan coba lagi.');
+            alert("Gagal menambah produk. Silakan coba lagi.");
         }
     };
 
@@ -180,9 +175,11 @@ export default function MenuPage() {
                 }
             );
             if (response.data.status) {
-                setMenuItems(menuItems.map(item => 
-                    item.id === currentItem.id ? currentItem : item
-                ));
+                setMenuItems(
+                    menuItems.map((item) =>
+                        item.id === currentItem.id ? currentItem : item
+                    )
+                );
                 closeEditModal();
             }
         } catch (error) {
@@ -201,7 +198,9 @@ export default function MenuPage() {
                 }
             );
             if (response.data.status) {
-                setMenuItems(menuItems.filter(item => item.id !== itemToDelete.id));
+                setMenuItems(
+                    menuItems.filter((item) => item.id !== itemToDelete.id)
+                );
                 closeDeleteModal();
             }
         } catch (error) {
@@ -211,21 +210,23 @@ export default function MenuPage() {
 
     // Loading and empty states
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="text-center py-8">Loading...</div>;
     }
 
     if (menuItems.length === 0) {
-        return <div>No menu items available.</div>;
+        return <div className="text-center py-8">No menu items available.</div>;
     }
 
     // Render component
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-4">Selamat Datang di Menu</h1>
-            
+            <h1 className="text-3xl font-bold text-center text-pink-600 mb-8">
+                Selamat Datang di Menu 🎉
+            </h1>
+
             {/* Add Menu Button */}
             <div className="flex justify-end mb-6">
-                <button 
+                <button
                     onClick={openAddModal}
                     className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded transition-colors"
                 >
@@ -233,52 +234,69 @@ export default function MenuPage() {
                 </button>
             </div>
 
-            {/* Menu Items Table */}
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border rounded-lg">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="py-3 px-4 border-b">No</th>
-                            <th className="py-3 px-4 border-b">Nama Menu</th>
-                            <th className="py-3 px-4 border-b">Harga</th>
-                            <th className="py-3 px-4 border-b">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {menuItems.map((item, index) => (
-                            <tr key={item.id} className="hover:bg-gray-50">
-                                <td className="border px-4 py-2 text-center">{index + 1}</td>
-                                <td className="border px-4 py-2">{item.name}</td>
-                                <td className="border px-4 py-2">{item.price}</td>
-                                <td className="border px-4 py-2 space-x-2">
-                                    <button 
-                                        className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded"
-                                        onClick={() => openEditModal(item)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button 
-                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                                        onClick={() => openDeleteModal(item)}
-                                    >
-                                        Hapus
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            {/* Menu Items Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {menuItems.map((item) => (
+                    <div
+                        key={item.id}
+                        className="bg-white rounded-lg shadow-lg border border-pink-300 p-4 flex flex-col justify-between hover:scale-105 transition transform"
+                    >
+                        {item.image ? (
+                            <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-40 object-cover rounded-md mb-4"
+                            />
+                        ) : (
+                            <div className="w-full h-40 bg-pink-100 flex items-center justify-center rounded-md mb-4">
+                                <span className="text-pink-500 text-lg">No Image</span>
+                            </div>
+                        )}
+                        <div>
+                            <h2 className="text-xl font-bold text-pink-600 mb-2">
+                                {item.name}
+                            </h2>
+                            <p className="text-gray-700 mb-1">
+                                Tipe: {item.type || "-"}
+                            </p>
+                            <p className="text-gray-700 mb-1">
+                                Ukuran: {item.size || "-"}
+                            </p>
+                            <p className="text-gray-800 font-semibold mb-4">
+                                Harga: Rp {item.price}
+                            </p>
+                        </div>
+                        <div className="flex justify-between">
+                            <button
+                                onClick={() => openEditModal(item)}
+                                className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => openDeleteModal(item)}
+                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                            >
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             {/* Add Modal */}
             {isAddModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-x-auto">
                     <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">Tambah Menu Item</h2>
+                        <h2 className="text-2xl font-bold text-pink-600 mb-4">
+                            Tambah Menu Item 🎈
+                        </h2>
                         <form onSubmit={handleAddSubmit}>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Nama Menu *</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Nama Menu *
+                                    </label>
                                     <input
                                         type="text"
                                         name="name"
@@ -289,7 +307,9 @@ export default function MenuPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Tipe</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Tipe
+                                    </label>
                                     <input
                                         type="text"
                                         name="type"
@@ -299,7 +319,9 @@ export default function MenuPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Ukuran</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Ukuran
+                                    </label>
                                     <input
                                         type="text"
                                         name="size"
@@ -309,7 +331,9 @@ export default function MenuPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Harga *</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Harga *
+                                    </label>
                                     <input
                                         type="text"
                                         name="price"
@@ -320,7 +344,9 @@ export default function MenuPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Gambar *</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Gambar *
+                                    </label>
                                     <input
                                         type="file"
                                         name="image"
@@ -335,7 +361,7 @@ export default function MenuPage() {
                                             <img
                                                 src={imagePreview}
                                                 alt="Preview"
-                                                className="w-full max-h-24 object-contain"
+                                                className="w-full max-h-24 object-contain rounded"
                                             />
                                         </div>
                                     )}
@@ -361,16 +387,19 @@ export default function MenuPage() {
                 </div>
             )}
 
-
             {/* Edit Modal */}
             {isEditModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">Edit Menu Item</h2>
+                        <h2 className="text-2xl font-bold text-pink-600 mb-4">
+                            Edit Menu Item ✨
+                        </h2>
                         <form onSubmit={handleEditSubmit}>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Nama Menu</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Nama Menu
+                                    </label>
                                     <input
                                         type="text"
                                         name="name"
@@ -380,7 +409,9 @@ export default function MenuPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Harga</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        Harga
+                                    </label>
                                     <input
                                         type="text"
                                         name="price"
@@ -414,8 +445,12 @@ export default function MenuPage() {
             {isDeleteModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">Hapus Menu Item</h2>
-                        <p className="mb-6">Apakah Anda yakin ingin menghapus item ini?</p>
+                        <h2 className="text-2xl font-bold text-pink-600 mb-4">
+                            Hapus Menu Item 😢
+                        </h2>
+                        <p className="mb-6">
+                            Apakah Anda yakin ingin menghapus item ini?
+                        </p>
                         <div className="flex justify-end gap-2">
                             <button
                                 type="button"

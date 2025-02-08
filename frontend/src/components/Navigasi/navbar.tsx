@@ -4,17 +4,44 @@ import * as React from 'react';
 
 const Navbar = () => {
     const [user, setUser] = React.useState(null);
+    const [cartItemCount, setCartItemCount] = React.useState(0);
 
     const handleLogout = () => {
         sessionStorage.removeItem('user');
         window.location.reload();
     };
 
+    // Fungsi untuk menghitung total item di keranjang
+    const calculateCartItems = () => {
+        const cart = JSON.parse(sessionStorage.getItem("cart") || "[]");
+        const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        setCartItemCount(totalItems);
+    };
+
     React.useEffect(() => {
+        // Load user data
         const storedUser = sessionStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
+
+        // Initial cart count
+        calculateCartItems();
+
+        // Setup event listener untuk update cart count
+        const handleStorageChange = (e) => {
+            if (e.key === "cart") {
+                calculateCartItems();
+            }
+        };
+
+        // Listen for changes in sessionStorage
+        window.addEventListener('storage', handleStorageChange);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
     }, []);
 
     return (
@@ -39,9 +66,16 @@ const Navbar = () => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-black">
-                        <li><a>Home</a></li>
-                        <li><a>Menu</a></li>
-                        <li><a>Kontak Kami</a></li>
+                        <li><a href='/'>Home</a></li>
+                        <li><a href='/pesanan'>Pesanan saya</a></li>
+                        <li>
+                            <div className="indicator">
+                                {cartItemCount > 0 && (
+                                    <span className="indicator-item badge badge-secondary">{cartItemCount} Item</span>
+                                )}
+                                <a href='/keranjang'>Keranjang saya</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <a href='/' className="btn btn-ghost text-xl">Naffie's Restaurant</a>
@@ -51,17 +85,24 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal px-1">
                     <li><a href='/'>Home</a></li>
                     <li><a href='/pesanan'>Pesanan saya</a></li>
+                    <li>
+                        <div className="indicator">
+                            {cartItemCount > 0 && (
+                                <span className="indicator-item badge badge-secondary">{cartItemCount} Item</span>
+                            )}
+                            <a href='/keranjang'>Keranjang saya</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div className="gap-2 navbar-end hidden lg:flex">
                 {user ? (
                     <div className="flex items-center gap-2">
-                        <span> {user.data?.user?.name || user.data?.userAdmin?.name}🖐🏼</span>
+                        <span>{user.data?.user?.name || user.data?.userAdmin?.name}🖐🏼</span>
                         <button onClick={handleLogout} className="btn bg-pink-300 hover:bg-pink-600">
                             Keluar
                         </button>
                     </div>
-
                 ) : (
                     <>
                         <a href="/auth/masuk" className="btn bg-pink-300 hover:bg-pink-600">Masuk</a>

@@ -178,6 +178,7 @@ const CartPage = () => {
                                             <span>Total Harga</span>
                                             <span>Rp {calculateTotal().toLocaleString()}</span>
                                         </div>
+
                                         <button
                                             onClick={handleCheckout}
                                             disabled={orderLoading}
@@ -185,6 +186,9 @@ const CartPage = () => {
                                         >
                                             {orderLoading ? "Memproses..." : "Checkout"}
                                         </button>
+                                        <div className="flex justify-between text-sm text-center pt-2">
+                                            <span>Pembayaran dilakukan pada saat ice cream kamu sampai ya:D</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

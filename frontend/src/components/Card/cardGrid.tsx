@@ -79,6 +79,7 @@ const CardGrid = () => {
         // Simpan keranjang yang sudah diupdate ke sessionStorage
         sessionStorage.setItem("cart", JSON.stringify(updatedCart));
         alert("Produk berhasil ditambahkan ke keranjang");
+        window.location.reload();
     };
 
     // Fungsi untuk handle order
